@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 /**
  * 
@@ -67,11 +68,11 @@ public class HtmlBuilder extends AbstractBuilder {
     }
 
     protected void writeAdded(PrintWriter pw, Set added) {
-    	writeDiffSet(pw, "Added", added);
+    	writeDiffSet(pw, "Added to second file", added);
     }
 
     protected void writeRemoved(PrintWriter pw, Set removed) {
-    	writeDiffSet(pw, "Removed", removed);
+    	writeDiffSet(pw, "Removed from second file", removed);
     }
 
     protected void writeChanged(PrintWriter pw, Set changed) {
@@ -79,6 +80,8 @@ public class HtmlBuilder extends AbstractBuilder {
     }
 
     protected void writeDiffSet(PrintWriter pw, String name, Set s) {
+        Set treeSet = new TreeSet(s);
+        
     	pw.println("<TABLE CELLSPACING=\"1\" CELLPADDING=\"3\" WIDTH=\"100%\" BORDER=\"0\">");
     	pw.println("<tr>");
         pw.println("<td class=\"diffs\" colspan=\"2\">" + name  + " (" + s.size() + " entries)</td>");
@@ -89,7 +92,7 @@ public class HtmlBuilder extends AbstractBuilder {
         pw.println("<td>");
         if (s.size() > 0) {
             pw.println("<ul>");
-            Iterator iter = s.iterator();
+            Iterator iter = treeSet.iterator();
             while (iter.hasNext()) {
                 String key = (String) iter.next();
                 pw.print("<li>");
@@ -106,7 +109,7 @@ public class HtmlBuilder extends AbstractBuilder {
 
     protected String getStyleTag()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         
         sb.append("<style type=\"text/css\">");
         sb.append(" body, p { ");
